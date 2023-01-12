@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import BookingModal from '../BookingModal/BookingModal'
 import AppointmentOptions from './AppointmentOptions'
 
-const AvailableAppointment = ({selectedDate,setSelectedDate}) => {
+const AvailableAppointment = ({selectedDate}) => {
     const [appointmentOptions,setAppointmentOptions] = useState([])
     const [treatment,setTreatment] = useState(null)
     useEffect(()=>{
@@ -24,10 +24,12 @@ const AvailableAppointment = ({selectedDate,setSelectedDate}) => {
                 ></AppointmentOptions>)
             }
           </div>
+          {/* if there is no treatment the modal will not open */}
        {treatment &&
            <BookingModal
            selectedDate={selectedDate}
           treatment={treatment}
+          setTreatment={setTreatment}
           ></BookingModal>
        }
     </section>
