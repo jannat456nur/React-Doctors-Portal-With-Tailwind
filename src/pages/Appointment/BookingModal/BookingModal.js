@@ -1,5 +1,7 @@
 import { format } from 'date-fns';
 import React from 'react'
+import { toast } from 'react-hot-toast';
+// import { json } from 'react-router-dom';
 
 const BookingModal = ({treatment,selectedDate,setTreatment}) => {
 
@@ -27,7 +29,23 @@ const BookingModal = ({treatment,selectedDate,setTreatment}) => {
         // and once data is saved then close the modal 
         // and display success toast
         console.log(booking)
-        setTreatment(null)
+
+        fetch('http://localhost:5000/bookings',{
+          method:'post',
+          headers:{
+            'content-type':'application/json'
+          },
+          body:JSON.stringify(booking)
+        })
+        .then(res => res.json())
+        .then(data =>{
+          console.log(data);
+         if(data.acknowledged){
+          setTreatment(null)
+          toast.success('Booking Confirmed')
+         }
+        })
+      
     }
   return (
     <div>
@@ -48,7 +66,7 @@ const BookingModal = ({treatment,selectedDate,setTreatment}) => {
            
      </select>
         <input  type="text" value={selectedDate} class="input input-bordered w-full " />
-        <input name='name' type="text" placeholder='Your Name' class="input input-bordered w-full " />
+        <input name='name' type="text" disabled value={name} placeholder='Your Name' class="input input-bordered w-full " />
         <input name='email' type="email" placeholder='Email Address' class="input input-bordered w-full " />
         <input name='phone' type="text" placeholder='Phone' class="input input-bordered w-full " />
         <input type="submit"value="Submit" class=" btn btn-active  input w-full text-dark" />
