@@ -3,9 +3,9 @@ import React from 'react'
 import { toast } from 'react-hot-toast';
 // import { json } from 'react-router-dom';
 
-const BookingModal = ({treatment,selectedDate,setTreatment}) => {
+const BookingModal = ({treatment,selectedDate,setTreatment,refetch}) => {
 
-    const {name,slots} = treatment;//treatment is appointment options just different name
+    const {name:treatmentName,slots} = treatment;//treatment is appointment options just different name
     const date = format(selectedDate, 'PP')
 
     const handleBooking = event =>{
@@ -18,7 +18,7 @@ const BookingModal = ({treatment,selectedDate,setTreatment}) => {
 
         const booking = {
             appointmentDate:date,
-            treatment:name,
+            treatment:treatmentName,
             patient:name,
             name,
             slot,
@@ -43,6 +43,10 @@ const BookingModal = ({treatment,selectedDate,setTreatment}) => {
          if(data.acknowledged){
           setTreatment(null)
           toast.success('Booking Confirmed')
+          refetch();
+         }
+         else{
+          toast.error(data.message)
          }
         })
       
@@ -53,7 +57,8 @@ const BookingModal = ({treatment,selectedDate,setTreatment}) => {
 <div class="modal">
   <div class="modal-box relative">
     <label for="booking-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
-    <h3 class="text-lg font-bold">{name}</h3>
+    {/* here */}
+    <h3 class="text-lg font-bold">{treatmentName}</h3>  
     <form onSubmit={handleBooking} className='grid grid-cols-1  gap-6 mt-10'>
         <input type="text" value={date} disabled class=" input input-bordered w-full " />
        <select name='slot' class="select select-bordered w-full">
@@ -66,7 +71,7 @@ const BookingModal = ({treatment,selectedDate,setTreatment}) => {
            
      </select>
         <input  type="text" value={selectedDate} class="input input-bordered w-full " />
-        <input name='name' type="text" disabled value={name} placeholder='Your Name' class="input input-bordered w-full " />
+        <input name='name' type="text" disabled value={treatmentName} placeholder='Your Name' class="input input-bordered w-full " />
         <input name='email' type="email" placeholder='Email Address' class="input input-bordered w-full " />
         <input name='phone' type="text" placeholder='Phone' class="input input-bordered w-full " />
         <input type="submit"value="Submit" class=" btn btn-active  input w-full text-dark" />
