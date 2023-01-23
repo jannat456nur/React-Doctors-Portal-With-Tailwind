@@ -20,7 +20,7 @@ const Login = () => {
   const from = location.state?.from?.pathname || '/';
   if (token){
      navigate(from, { replace: true })
-  }
+  } 
 
   //set login
   const handleLogin = (data) => {
